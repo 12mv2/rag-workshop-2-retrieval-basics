@@ -1,0 +1,58 @@
+{
+  "Eliud Kipchoge": {
+    "type": "human",
+    "cadence": 185,
+    "heel_strike": "low",
+    "vertical_oscillation": 6.2,
+    "description": "Marathon world record holder"
+  },
+  "Usain Bolt": {
+    "type": "human",
+    "cadence": 260,
+    "heel_strike": "medium",
+    "vertical_oscillation": 4.8,
+    "description": "Sprinting legend, 100m and 200m world record holder"
+  },
+  "Mo Farah": {
+    "type": "human",
+    "cadence": 180,
+    "heel_strike": "low",
+    "vertical_oscillation": 7.0,
+    "description": "Multiple Olympic gold medalist in 5000m and 10000m"
+  },
+  "Allyson Felix": {
+    "type": "human",
+    "cadence": 215,
+    "heel_strike": "low",
+    "vertical_oscillation": 5.5,
+    "description": "Most decorated female track athlete in Olympic history"
+  },
+  "Kenenisa Bekele": {
+    "type": "human",
+    "cadence": 190,
+    "heel_strike": "low",
+    "vertical_oscillation": 6.8,
+    "description": "Former 5000m and 10000m world record holder"
+  },
+  "Cheetah": {
+    "type": "animal",
+    "cadence": 210,
+    "heel_strike": "low",
+    "vertical_oscillation": 12.5,
+    "description": "Fastest land animal with a top speed of 70-75 mph"
+  },
+  "Horse": {
+    "type": "animal",
+    "cadence": 150,
+    "heel_strike": "high",
+    "vertical_oscillation": 10.2,
+    "description": "Domesticated mammal used for racing and transportation"
+  },
+  "Kangaroo": {
+    "type": "animal",
+    "cadence": 70,
+    "heel_strike": "none",
+    "vertical_oscillation": 35.0,
+    "description": "Marsupial that moves by hopping with extremely efficient energy return"
+  }
+}
