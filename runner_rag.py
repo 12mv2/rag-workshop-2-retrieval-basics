@@ -7,11 +7,23 @@ from dotenv import load_dotenv
 # Load environment variables from .env file (if present)
 load_dotenv()
 
-# Set up OpenAI client
+### === MODEL SETUP SELECTION === ###
+### Uncomment ONE of the blocks below to active your model ###
+
+# === OpenAI Setup === 
+import openai
 openai.api_key = os.getenv("OPENAI_API_KEY")
 if not openai.api_key:
-    print("⚠️ OPENAI_API_KEY not found. Please set it as an environment variable or in a .env file.")
+    print("OPENAI_API_KEY not found. Please set it as an environment variable or in a .env file.")
     print("You can continue with the workshop, but the LLM queries will not work.")
+
+# === GEMINI SETUP ===
+
+# import google.generativeai as 
+# GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+# if not GEMINI_API_KEY:
+#     print(" GEMINI_API_KEY not found. Please set it as an environment variable or in a .env file.")
+#     print("You can continue with the workshop, but the LLM queries will not work.")
 
 # 1. Store runner and animal data in dictionaries
 runners_data = {
@@ -156,34 +168,29 @@ def retrieve_context(query):
 # 4. Function to query the LLM with the retrieved context
 def query_llm(query):
     """Query the LLM with the retrieved context"""
-    if not openai.api_key:
-        return "⚠️ OpenAI API key not set. Please set OPENAI_API_KEY environment variable."
-    
-    # Retrieve relevant context
     context = retrieve_context(query)
-    
-    # Print the retrieved context (for educational purposes in the workshop)
+
     print("\n📚 Retrieved Context:")
     print("-" * 40)
     print(context)
     print("-" * 40)
-    
-    # Prepare the prompt with context and query
+
     prompt = f"""
-    You are a sports biomechanics expert that analyzes running gaits of both humans and animals. 
+    You are a sports biomechanics expert that analyzes running gaits of both humans and animals.
     Use ONLY the following information to answer the question. If the information doesn't contain
     the answer, say "I don't have enough information to answer that."
-    
+
     INFORMATION:
     {context}
-    
+
     QUESTION: {query}
-    
+
     ANSWER:
     """
-    
-    # Call the API - using ChatGPT (gpt-3.5-turbo)
+
     try:
+        # === OpenAI Section ===
+        # Uncomment the block below to use OpenAI
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -193,6 +200,13 @@ def query_llm(query):
             max_tokens=500
         )
         return response.choices[0].message.content
+
+        # === Gemini Section ===
+        # Uncomment the block below to use Gemini
+        # model = genai.GenerativeModel("gemini-1.5-flash")
+        # response = model.generate_content(prompt)
+        # return response.text
+
     except Exception as e:
         return f"Error querying LLM: {str(e)}"
 
