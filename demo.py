@@ -29,8 +29,15 @@ if not openai.api_key:
 # GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 # if not GEMINI_API_KEY:
 #     print("\n🔑 Gemini API key not found.")
-#     print("Create a .env file with: GEMINI_API_KEY=your-key")
-#     exit(1)
+#     print("You can either:")
+#     print("  1. Create a .env file with: GEMINI_API_KEY=your-key")
+#     print("  2. Enter it now (this session only)")
+#     key = input("\nEnter API key (or press Enter to skip): ").strip()
+#     if key:
+#         GEMINI_API_KEY = key
+#     else:
+#         print("⚠️ Without an API key, the demo won't work.")
+#         exit(1)
 # genai.configure(api_key=GEMINI_API_KEY)
 
 # Data: runners and animals with gait metrics
@@ -56,18 +63,22 @@ def retrieve_context(query):
     context = ""
     query_lower = query.lower()
     found_entity = False
-    
-    # Check for specific entities
+
+    # Check for specific entities (supports partial name matching)
+    query_words = set(query_lower.split())
     for name, data in runners_data.items():
-        if name.lower() in query_lower:
+        name_words = set(name.lower().split())
+        if name.lower() in query_lower or query_words & name_words:
             entity_type = "runner" if data["type"] == "human" else "animal"
             context += f"{name} ({entity_type}): {data['description']}\n"
             context += f"  Cadence: {data['cadence']} steps/min | Heel strike: {data['heel_strike']} | Vertical osc: {data['vertical_oscillation']} cm\n\n"
             found_entity = True
     
-    # Check for metric definitions
+    # Check for metric definitions (handles both "heel strike" and "heel_strike")
+    query_normalized = query_lower.replace(" ", "_")
     for metric in ["cadence", "heel_strike", "vertical_oscillation"]:
-        if metric in query_lower:
+        metric_spaced = metric.replace("_", " ")
+        if metric in query_normalized or metric_spaced in query_lower:
             context += f"{metric.title()}: {definitions[metric]}\n\n"
             for name, data in runners_data.items():
                 entity_type = "Human" if data["type"] == "human" else "Animal"
